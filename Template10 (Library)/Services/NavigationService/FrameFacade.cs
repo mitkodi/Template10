@@ -6,7 +6,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
-using System.Linq;
 
 namespace Template10.Services.NavigationService
 {
@@ -86,19 +85,9 @@ namespace Template10.Services.NavigationService
             FrameStateContainer().Values.Clear();
             foreach (var container in FrameStateContainer().Containers)
             {
-				if (container.Key == GetPageStateKey(typeof(NavigationService)))
-					continue;
-				if (!Frame.BackStack.Any(x => GetPageStateKey(x.SourcePageType) == container.Key))
-				{
-					FrameStateContainer().DeleteContainer(container.Key);
-					var pageType = pageStateContainers.Keys.Where(t => GetPageStateKey(t) == container.Key).FirstOrDefault();
-
-					if (pageType != null)
-						pageStateContainers.Remove(pageType);	
-				}
-                //FrameStateContainer().DeleteContainer(container.Key);
+                FrameStateContainer().DeleteContainer(container.Key);
             }
-            //pageStateContainers.Clear();
+            pageStateContainers.Clear();
         }
 
         private string GetPageStateKey(Type type) => string.Format("{0}", type);
@@ -119,7 +108,6 @@ namespace Template10.Services.NavigationService
             var key = GetPageStateKey(type);
             if (FrameStateContainer().Containers.ContainsKey(key))
                 FrameStateContainer().DeleteContainer(key);
-			pageStateContainers.Remove(type);
         }
 
         #endregion
