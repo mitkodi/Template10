@@ -1,7 +1,17 @@
-<common:BootStrapper x:Class="MyTest.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:common="using:Template10.Common">
+<common:BootStrapper 
+	x:Class="MyTest.App"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:c="using:MyTest.Converters"
+	xmlns:common="using:Template10.Common">
 
-    <Application.Resources>
-        <ResourceDictionary Source="Styles\Custom.xaml" />
-    </Application.Resources>
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Styles\Custom.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+			<c:DummyValueConverter x:Key="DummyValueConverter" />
+		</ResourceDictionary>
+	</Application.Resources>
 
 </common:BootStrapper>

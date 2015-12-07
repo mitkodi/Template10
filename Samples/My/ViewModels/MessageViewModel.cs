@@ -15,8 +15,24 @@ namespace MyTest.ViewModels {
 		private MessageService _messageService;
 		protected bool Standalone;
 
+		#region ctor
+
+		public MessageViewModel() {
+			if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled) {
+				_messageService = new MessageService();
+			}
+		}
+
+		#endregion
+
+		#region Message Message
+
 		private Message _message;
 		public Message Message { get { return _message; } set { Set(ref _message, value); } }
+
+		#endregion
+
+		#region ICommand DeleteCommand
 
 		private DelegateCommand _deleteCommand;
 		public ICommand DeleteCommand {
@@ -39,11 +55,11 @@ namespace MyTest.ViewModels {
 			}
 		}
 
-		public MessageViewModel() {
-			_messageService = new MessageService();
-		}
+		#endregion
 
-		public override void OnNavigatedTo(object parameter, NavigationMode mode, IDictionary<string, object> state) {
+		#region Navigation
+
+		public override async void OnNavigatedTo(object parameter, NavigationMode mode, IDictionary<string, object> state) {
 			string messageId = null;
 			if (parameter != null) {
 				messageId = parameter.ToString();
@@ -55,7 +71,7 @@ namespace MyTest.ViewModels {
 			}
 
 			if (messageId != null) {
-				Message = _messageService.GetMessage(messageId);
+				Message = await _messageService.GetMessage(messageId);
 			}
 		}
 
@@ -71,5 +87,7 @@ namespace MyTest.ViewModels {
 		public override void OnNavigatingFrom(NavigatingEventArgs args) {
 			args.Cancel = false;
 		}
+
+		#endregion
 	}
 }

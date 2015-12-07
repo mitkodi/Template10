@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyTest.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,6 +21,8 @@ namespace MyTest.Views {
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
 	public sealed partial class MessagesPage : Page {
+		public MessagesPageViewModel ViewModel => (MessagesPageViewModel)DataContext;
+
 		public MessagesPage() {
 			this.InitializeComponent();
 		}

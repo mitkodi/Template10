@@ -1,13 +1,97 @@
 ﻿<Page
-    x:Class="MyTest.Views.MessagesPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:MyTest.Views"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+  x:Class="MyTest.Views.MessagesPage"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:MyTest.Views"
+	xmlns:t10c="using:Template10.Controls"
+	xmlns:vm="using:MyTest.ViewModels"
+	xmlns:i="using:Microsoft.Xaml.Interactivity"
+	xmlns:ia="using:Microsoft.Xaml.Interactions.Core"
+	xmlns:t10b="using:Template10.Behaviors"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  mc:Ignorable="d">
+	<Page.DataContext>
+		<vm:MessagesPageViewModel />
+	</Page.DataContext>
+	<Page.Resources>
+		<DataTemplate x:Name="MessagesViewDataTemplate" x:DataType="vm:MessagesPageViewModel">
+			<ListView ItemsSource="{x:Bind Messages, Mode=OneWay}" 
+								SelectedItem="{x:Bind Selected.Message, Mode=TwoWay, Converter={StaticResource DummyValueConverter}}" />
+		</DataTemplate>
+	</Page.Resources>
+	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup x:Name="WindowWidthVisualStates">
+				<VisualState x:Name="NarrowVisualState">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="RightColumn.Width" Value="*" />
+						<Setter Target="RightColumn.Width" Value="0" />
+						<!--<Setter Target="MessagesCommandBar.(Grid.Row)" Value="2" />-->
+						<Setter Target="SelectedMessageCommandBar.(Grid.Row)" Value="2" />
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="NormalVisualState">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
+					</VisualState.StateTriggers>
+				</VisualState>
+				<VisualState x:Name="WideSVisualState">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="RightColumn.Width" Value="520" />
+						<Setter Target="Rect.Fill" Value="Green" />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+		<t10c:PageHeader Content="Messages" Frame="{x:Bind Frame}">
+			<i:Interaction.Behaviors>
+				<t10b:EllipsisBehavior Visibility="Collapsed" />
+			</i:Interaction.Behaviors>
+		</t10c:PageHeader>
 
-    </Grid>
+		<Grid Grid.Row="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition  />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition x:Name="RightColumn" Width="320" />
+				<ColumnDefinition x:Name="LeftColumn" />
+			</Grid.ColumnDefinitions>
+
+			<!--<CommandBar x:Name="MessagesCommandBar" Grid.Row="0">
+				<i:Interaction.Behaviors>
+					<t10b:EllipsisBehavior Visibility="Collapsed" />
+				</i:Interaction.Behaviors>
+				<CommandBar.Content>
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+						<TextBox x:Name="SearchTextBox" 
+										 Text="{x:Bind ViewModel.SearchValue, Mode=TwoWay}"
+										 Width="200" BorderThickness="0" Background="White" />
+						<AppBarButton x:Name="FindButton" Icon="Find" />
+						<AppBarButton Icon="Clear" />
+					</StackPanel>
+				</CommandBar.Content>
+			</CommandBar>-->
+			
+			<!--<TextBlock x:Name="SelectedMessageCommandBar" Text="SelectedMessage CommandBar Placeholder" Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="0" Grid.Column="1" />-->
+
+			<ContentControl ContentTemplate="{StaticResource MessagesViewDataTemplate}"
+											Content="{x:Bind ViewModel}"
+											Grid.Row="1" />
+		</Grid>
+	</Grid>
 </Page>

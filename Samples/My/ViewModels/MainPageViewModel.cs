@@ -19,7 +19,7 @@ namespace MyTest.ViewModels {
 		}
 
 		public override async Task OnNavigatedFromAsync(IDictionary<string, object> state, bool suspending) {
-			if (suspending)
+			//if (suspending)
 				state[nameof(Value)] = Value;
 			await Task.Yield();
 		}

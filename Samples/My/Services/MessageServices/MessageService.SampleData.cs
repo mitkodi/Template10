@@ -9,7 +9,7 @@ namespace MyTest.Services.MessageServices {
 	public partial class MessageService {
 		private Random _random = new Random((int) DateTime.Now.Ticks);
 
-		private IEnumerable<Message> GetSampleData() {
+		private async Task<IEnumerable<Message>> GetSampleData() {
 			var froms = new[] {
 				"Jonathan Archer",
 				"T'Pol Main",
@@ -49,6 +49,7 @@ namespace MyTest.Services.MessageServices {
 				"XDonec rutrum magna a turpis pharetra, sit amet commodo sapien consequat. Duis dictum ante nunc, eu sollicitudin lacus imperdiet quis. Donec vel est eget ligula mollis venenatis ut quis metus. Vivamus gravida, ligula vitae rhoncus mattis, magna est venenatis lectus, ut viverra dui est et massa.Quisque faucibus a diam at porta. Nam sit amet consequat dui.Ut elementum leo orci, eget dictum diam rutrum eget. Aliquam ac mattis libero. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean mattis enim vel tincidunt fermentum. Fusce in imperdiet ipsum. "
 			};
 
+			var result = new List<Message>();
 			for (var i = 0; i < froms.Length; i++) {
 				var message = new Message {
 					Id = i.ToString(), //Guid.NewGuid(),ToString(),
@@ -58,8 +59,11 @@ namespace MyTest.Services.MessageServices {
 					To = "Mitko Di",
 					Date = DateTime.Now.Subtract(TimeSpan.FromDays(_random.Next(0, 10)))
 				};
-				yield return message;
+				//yield return message;
+				result.Add(message);
 			}
+
+			return await Task.FromResult<IEnumerable<Message>>(result);
 		}
 	}
 }
