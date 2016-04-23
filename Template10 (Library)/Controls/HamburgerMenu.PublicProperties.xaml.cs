@@ -265,8 +265,9 @@ namespace Template10.Controls
         }
         public static readonly DependencyProperty AccentColorProperty =
             DependencyProperty.Register(nameof(AccentColor), typeof(Color),
-                typeof(HamburgerMenu), new PropertyMetadata(null, (d, e) => Changed(nameof(AccentColor), e)));
+                typeof(HamburgerMenu), new PropertyMetadata(Colors.Transparent, (d, e) => Changed(nameof(AccentColor), e)));
 
+        public Brush AccentBrush => AccentColor.ToSolidColorBrush();
         /// <summary>
         /// Selected indicates the current button highlighted in the navigation Pane. Setting this
         /// value will highlight the corresponding button as well as invoke navigation.
